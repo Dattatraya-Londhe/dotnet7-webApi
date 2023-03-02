@@ -19,25 +19,7 @@ namespace StudentService.services.student.service
         {
             this._db = db;
         }
-       /* public EntityEntry<Student> CreateStudent(Student student)
-        {
-            try
-            {
-                Console.WriteLine("Inside the Service....");
-                Console.WriteLine(student.ToString());
-                var record = this._db.Students.Add(student);
-                Console.WriteLine(record.ToString());
-                Console.WriteLine("Inside the Service????");
-                return record;
-                
-            }
-            catch(Exception e) 
-            {
-               throw new Exception("500 -Internal Server Error ");
-            }
-        }*/
-
-        public async Task<ServiceResponse<GetStudentDto>> CreateStudent(Student student)
+      public async Task<ServiceResponse<GetStudentDto>> CreateStudent(Student student)
         {
             ServiceResponse<GetStudentDto> response = new ServiceResponse<GetStudentDto>();
             try

@@ -20,33 +20,7 @@ namespace StudentService.controllers.studentController
         {
             this._service= service;
         }
-        //private readonly ApplicationDbContext _db;
-        //public StudentController(ApplicationDbContext db)
-        //{
-        //    this._db = db;
-        //}
-        /*[HttpPost]
-        public ActionResult<StudentDto> CreateStudent([FromBody] Student student)
-        {
-            try
-            {
-                Console.WriteLine("Inside the Controller....");
-                Console.WriteLine(student.ToString());
-                var record = this._service.CreateStudent(student);
-                Console.WriteLine("Inside the Controller???");
-                //var Dto = StudentMapper.ToStudentDto(record);
-                return Ok(record);
-
-                //var record = this._db.Students.Add(student);
-                //this._db.SaveChanges();
-                //return Ok(record);
-            } 
-            catch(Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }*/
-
+       
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<GetStudentDto>>> CreateStudent([FromBody]AddStudentDto addStudent)
         {
