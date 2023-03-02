@@ -90,7 +90,7 @@ namespace StudentService.services.student.service
                 if(record is not null)
                 {
                     response.Data = StudentMapper.ToGetStudentDto(record);
-                    response.Message = "Student information retrieved successfully"
+                    response.Message = "Student information retrieved successfully";
                     return response;
                 }
                 response.Message = $"Student with Id = {id} not found";
