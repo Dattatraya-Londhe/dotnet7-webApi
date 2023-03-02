@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using StudentService.database.db.config;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentService.database.db.models;
 using StudentService.database.dto;
 using StudentService.database.mapper;
+using StudentService.dtos;
+using StudentService.models;
 using StudentService.services.student.Interface;
-using StudentService.services.student.service;
-using System.Security.Cryptography.Xml;
+
 
 namespace StudentService.controllers.studentController
 {
@@ -49,76 +48,111 @@ namespace StudentService.controllers.studentController
         }*/
 
         [HttpPost]
-        public async Task<ActionResult<StudentDto>> CreateStudent([FromBody]Student student)
+        public async Task<ActionResult<ServiceResponse<GetStudentDto>>> CreateStudent([FromBody]AddStudentDto addStudent)
         {
             try
             {
-                var record = await _service.CreateStudent(student);
-                if (record == null)
+                var student = StudentMapper.ToStudent(addStudent);
+                var response = await _service.CreateStudent(student);
+                if (!response.Success)
                 {
-                    return BadRequest("Unable to Process");
+                    return BadRequest(response);
                 }
-                return Ok(StudentMapper.ToStudentDto(record));
+                return Ok(response);
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new ServiceResponse<GetStudentDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                });
             }
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StudentDto>>> GetAllStudent()
+        public async Task<ActionResult<List<GetStudentDto>>> GetAllStudent()
         {
             try
             {
-                var record = await _service.GetAllStudents();
-                if (record== null)
+                var response = await _service.GetAllStudents();
+                if (!response.Success)
                 {
-                    return NoContent();
+                    return BadRequest(response);
                 }
-                return Ok(record);
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new ServiceResponse<GetStudentDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                }) ;
             }
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDto>> GetStudentById(int id)
+        public async Task<ActionResult<GetStudentDto>> GetStudentById(int id)
         {
             try
             {
-                var record = await _service.GetStudentById(id);
-                if (record == null)
+                var response = await _service.GetStudentById(id);
+                if (!response.Success)
                 {
-                    return NoContent();
+                    return BadRequest(response);
                 }
-                return Ok(StudentMapper.ToStudentDto(record));
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new ServiceResponse<GetStudentDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                });
             }
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<StudentDto>> DeleteStudent(int id)
+        public async Task<ActionResult<GetStudentDto>> DeleteStudent(int id)
         {
             try
             {
-                var record = await _service.DeleteStudent(id);
-                if (record == null)
+                var response = await _service.DeleteStudent(id);
+                if (!response.Success)
                 {
-                    return NotFound();
+                    return BadRequest(response) ;
                 }
-                return Ok(StudentMapper.ToStudentDto(record));
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return BadRequest(new ServiceResponse<GetStudentDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                });
+            }
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Student>> UpdateStudent(int id, [FromBody]AddStudentDto updateStudent)
+        {
+            try
+            {
+                var student = StudentMapper.ToStudent(updateStudent);
+                var response = await _service.UpdateStudent(id,student);
+                if (!response.Success)
+                {
+                    return BadRequest(response);
+                }
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new ServiceResponse<GetStudentDto>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                });
             }
         }
     }

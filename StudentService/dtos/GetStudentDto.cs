@@ -1,6 +1,6 @@
 ﻿namespace StudentService.database.dto
 {
-    public class StudentDto
+    public class GetStudentDto
     {
         //ssspublic int Id { get; set; }
         public string Name { get; set; }
